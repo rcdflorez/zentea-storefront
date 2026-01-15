@@ -1,6 +1,4 @@
 import Layout from '../src/components/layout';
-import { HEADER_FOOTER_ENDPOINT } from '../src/utils/constants/endpoints';
-import axios from 'axios';
 import CartItemsContainer from '../src/components/cart/cart-items-container';
 
 export default function Cart({ headerFooter }) {
@@ -14,11 +12,9 @@ export default function Cart({ headerFooter }) {
 
 export async function getStaticProps() {
 	
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
-	
 	return {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
+			headerFooter: {},
 		},
 		
 		/**

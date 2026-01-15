@@ -1,7 +1,6 @@
 /**
  * Internal Dependencies.
  */
-import { HEADER_FOOTER_ENDPOINT } from '../../src/utils/constants/endpoints';
 import { getProductsData, getProductBySlug } from '../../src/utils/products';
 import Layout from '../../src/components/layout';
 import SingleProduct from '../../src/components/single-product';
@@ -9,7 +8,6 @@ import SingleProduct from '../../src/components/single-product';
 /**
  * External Dependencies.
  */
-import axios from 'axios';
 import { useRouter } from 'next/router';
 
 export default function Product( { headerFooter, product } ) {
@@ -36,12 +34,38 @@ export default function Product( { headerFooter, product } ) {
 export async function getStaticProps( { params } ) {
 	
 	const { slug } = params || {};
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
-	const { data: product } = await getProductBySlug( slug );
+	let product = [];
+	
+	try {
+		const productResponse = await getProductBySlug( slug );
+		product = productResponse?.data ?? [];
+		
+		// Debug opcional: set DEBUG_PRODUCT=true para imprimir el objeto completo en consola del server
+		if ( process.env.DEBUG_PRODUCT === 'true' ) {
+			// Imprimir toda la información del producto disponible vía API
+			console.log( '=== INFORMACIÓN COMPLETA DEL PRODUCTO VÍA API ===' );
+			console.log( 'Respuesta completa de la API:', productResponse );
+			console.log( 'Datos del producto:', product );
+			if ( product.length > 0 ) {
+				console.log( 'Primer producto (objeto completo):', product[0] );
+				console.log( 'Estructura del producto:', Object.keys( product[0] ) );
+				console.log( 'Imágenes del producto:', product[0].images );
+				if ( product[0].images && product[0].images.length > 0 ) {
+					console.log( 'Primera imagen (objeto completo):', product[0].images[0] );
+					console.log( 'Campos disponibles en la imagen:', Object.keys( product[0].images[0] ) );
+				}
+			}
+			console.log( '================================================' );
+		}
+	} catch ( error ) {
+		if ( process.env.NODE_ENV === 'development' ) {
+			console.error( 'Error al obtener producto:', error.message );
+		}
+	}
 	
 	return {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
+			headerFooter: {},
 			product: product.length ? product[ 0 ] : {},
 		},
 		revalidate: 1,

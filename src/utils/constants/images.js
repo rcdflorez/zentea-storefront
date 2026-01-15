@@ -1,1 +1,2 @@
-export const DEFAULT_IMG_URL = 'https://via.placeholder.com/380x380';
+// Usar una imagen local en lugar de placeholder externo para evitar errores de red
+export const DEFAULT_IMG_URL = '/placeholder-tea.jpg';

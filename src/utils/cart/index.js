@@ -35,7 +35,12 @@ export const addToCart = ( productId, qty = 1, setCart, setIsAddedToCart, setLoa
 			viewCart( setCart );
 		} )
 		.catch( err => {
-			console.log( 'err', err );
+			// Solo loguear errores en desarrollo
+			if ( process.env.NODE_ENV === 'development' ) {
+				console.warn( 'Error al agregar al carrito:', err?.message || err );
+			}
+			setLoading(false);
+			setIsAddedToCart(false);
 		} );
 };
 
@@ -56,7 +61,12 @@ export const viewCart = ( setCart, setProcessing = () => {} ) => {
 			setProcessing(false);
 		} )
 		.catch( err => {
-			console.log( 'err', err );
+			// Solo loguear errores en desarrollo, no mostrar en producción
+			if ( process.env.NODE_ENV === 'development' ) {
+				console.warn( 'Error al obtener carrito:', err?.message || err );
+			}
+			// Inicializar carrito vacío si falla
+			setCart( [] );
 			setProcessing(false);
 		} );
 };
@@ -77,7 +87,9 @@ export const updateCart = ( cartKey, qty = 1, setCart, setUpdatingProduct ) => {
 			viewCart( setCart, setUpdatingProduct );
 		} )
 		.catch( err => {
-			console.log( 'err', err );
+			if ( process.env.NODE_ENV === 'development' ) {
+				console.warn( 'Error al actualizar carrito:', err?.message || err );
+			}
 			setUpdatingProduct(false);
 		} );
 };
@@ -105,7 +117,9 @@ export const deleteCartItem = ( cartKey, setCart, setRemovingProduct ) => {
 			viewCart( setCart, setRemovingProduct );
 		} )
 		.catch( err => {
-			console.log( 'err', err );
+			if ( process.env.NODE_ENV === 'development' ) {
+				console.warn( 'Error al eliminar del carrito:', err?.message || err );
+			}
 			setRemovingProduct(false);
 		} );
 };
@@ -126,7 +140,9 @@ export const clearCart = async ( setCart, setClearCartProcessing ) => {
 		const response = await axios.delete( CART_ENDPOINT, addOrViewCartConfig );
 		viewCart( setCart, setClearCartProcessing );
 	} catch ( err ) {
-		console.log( 'err', err );
+		if ( process.env.NODE_ENV === 'development' ) {
+			console.warn( 'Error al limpiar carrito:', err?.message || err );
+		}
 		setClearCartProcessing(false);
 	}
 };

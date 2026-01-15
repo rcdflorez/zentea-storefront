@@ -1,8 +1,5 @@
 import Layout from '../src/components/layout';
-import {
-	HEADER_FOOTER_ENDPOINT,
-	WOOCOMMERCE_COUNTRIES_ENDPOINT,
-} from '../src/utils/constants/endpoints';
+import { WOOCOMMERCE_COUNTRIES_ENDPOINT } from '../src/utils/constants/endpoints';
 import axios from 'axios';
 import CheckoutForm from '../src/components/checkout/checkout-form';
 
@@ -17,12 +14,20 @@ export default function Checkout({ headerFooter, countries }) {
 
 export async function getStaticProps() {
 	
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
-	const { data: countries } = await axios.get( WOOCOMMERCE_COUNTRIES_ENDPOINT );
+	let countries = {};
+	
+	try {
+		const countriesResponse = await axios.get( WOOCOMMERCE_COUNTRIES_ENDPOINT );
+		countries = countriesResponse.data || {};
+	} catch ( error ) {
+		if ( process.env.NODE_ENV === 'development' ) {
+			console.error( 'Error al obtener países:', error.message );
+		}
+	}
 
 	return {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
+			headerFooter: {},
 			countries: countries || {}
 		},
 		

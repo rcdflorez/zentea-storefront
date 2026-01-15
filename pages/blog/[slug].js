@@ -3,7 +3,6 @@
  */
 import { isEmpty } from 'lodash';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 
 /**
  * Internal Dependencies.
@@ -11,7 +10,6 @@ import axios from 'axios';
 import Layout from '../../src/components/layout';
 import { FALLBACK, handleRedirectsAndReturnData } from '../../src/utils/slug';
 import { getFormattedDate, sanitize } from '../../src/utils/miscellaneous';
-import { HEADER_FOOTER_ENDPOINT } from '../../src/utils/constants/endpoints';
 import { getComments, getPost, getPosts } from '../../src/utils/blog';
 import Image from '../../src/components/image';
 import PostMeta from '../../src/components/post-meta';
@@ -53,13 +51,12 @@ const Post = ( { headerFooter, postData, commentsData } ) => {
 export default Post;
 
 export async function getStaticProps( { params } ) {
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
 	const postData = await getPost( params?.slug ?? '' );
 	const commentsData = await getComments( postData?.[0]?.id ?? 0 );
 
 	const defaultProps = {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
+			headerFooter: {},
 			postData: postData?.[0] ?? {},
 			commentsData: commentsData || []
 		},

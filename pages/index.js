@@ -2,12 +2,6 @@
  * Internal Dependencies.
  */
 import Products from '../src/components/products';
-import { HEADER_FOOTER_ENDPOINT } from '../src/utils/constants/endpoints';
-
-/**
- * External Dependencies.
- */
-import axios from 'axios';
 import { getProductsData } from '../src/utils/products';
 import Layout from '../src/components/layout';
 
@@ -31,13 +25,25 @@ export default function Home({ headerFooter, products }) {
 
 export async function getStaticProps() {
 	
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
-	const { data: products } = await getProductsData();
+	let products = [];
+	
+	// Manejar errores al obtener productos
+	// Reducir a 12 productos iniciales para mejorar performance
+	try {
+		const productsResponse = await getProductsData( 12 );
+		products = productsResponse?.data ?? [];
+	} catch ( error ) {
+		if ( process.env.NODE_ENV === 'development' ) {
+			console.error( 'Error al obtener productos:', error.message );
+		}
+		// Continuar con valores por defecto
+		products = [];
+	}
 	
 	return {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
-			products: products ?? {}
+			headerFooter: {},
+			products: Array.isArray( products ) ? products : []
 		},
 		
 		/**

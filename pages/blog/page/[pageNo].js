@@ -2,14 +2,12 @@
  * External Dependencies.
  */
 import { useRouter } from 'next/router';
-import axios from 'axios';
 
 /**
  * Internal Dependencies.
  */
 import { handleRedirectsAndReturnData } from '../../../src/utils/slug';
 import { getPosts } from '../../../src/utils/blog';
-import { HEADER_FOOTER_ENDPOINT } from '../../../src/utils/constants/endpoints';
 import Layout from '../../../src/components/layout';
 import Posts from '../../../src/components/posts';
 import Pagination from '../../../src/components/pagination';
@@ -50,12 +48,11 @@ export async function getStaticProps( { params } ) {
 	// Note: pageNo data type is string
 	const { pageNo } = params || {};
 	
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
 	const { data: postsData } = await getPosts( pageNo );
 	
 	const defaultProps = {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
+			headerFooter: {},
 			postsData: postsData || {},
 		},
 		/**

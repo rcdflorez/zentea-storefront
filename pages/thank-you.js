@@ -6,7 +6,6 @@ import Layout from '../src/components/layout';
 import Loading from '../src/components/icons/Loading';
 import Bag from '../src/components/icons/Bag';
 import { AppContext } from '../src/components/context';
-import { HEADER_FOOTER_ENDPOINT } from '../src/utils/constants/endpoints';
 
 const ThankYouContent = () => {
 	const [ cart, setCart ] = useContext( AppContext );
@@ -81,11 +80,9 @@ export default function ThankYou( { headerFooter } ) {
 
 export async function getStaticProps() {
 	
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
-	
 	return {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
+			headerFooter: {},
 		},
 		
 		/**

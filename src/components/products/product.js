@@ -14,12 +14,16 @@ const Product = ( { product } ) => {
 	const img = product?.images?.[0] ?? {};
 	const productType = product?.type ?? '';
 	
+	// Usar 'thumbnail' que viene de WooCommerce (ej: "/wp-content/uploads/2024/12/image-1-315x315.png")
+	// Es más pequeño que 'src' (full size) y carga más rápido
+	const imageUrl = img.thumbnail || img.thumb || img.src || img.url || img.source_url || '';
+	
 	return (
 		<div className="mt-4 mb-8 px-3 w-full overflow-hidden sm:w-1/2 md:w-1/3 xl:w-1/4">
 			<Link href={ `/product/${ product?.slug }`} >
 				<a>
 					<Image
-						sourceUrl={ img?.src ?? '' }
+						sourceUrl={ imageUrl }
 						altText={ img?.alt ?? ''}
 						title={ product?.name ?? '' }
 						width="380"

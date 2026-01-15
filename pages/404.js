@@ -2,12 +2,10 @@
  * External Link.
  */
 import Link from 'next/link';
-import axios from 'axios';
 
 /**
  * Internal Link.
  */
-import { HEADER_FOOTER_ENDPOINT } from '../src/utils/constants/endpoints';
 import Layout from '../src/components/layout';
 
 function Error404( { headerFooter } ) {
@@ -46,11 +44,9 @@ export default Error404;
 
 export async function getStaticProps() {
 	
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
-	
 	return {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
+			headerFooter: {},
 		},
 	};
 }

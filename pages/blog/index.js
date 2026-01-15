@@ -1,15 +1,9 @@
 /**
- * External Dependencies.
- */
-import axios from 'axios';
-
-/**
  * Internal Dependencies.
  */
 import Layout from '../../src/components/layout';
 import Posts from '../../src/components/posts';
 import Pagination from '../../src/components/pagination';
-import { HEADER_FOOTER_ENDPOINT } from '../../src/utils/constants/endpoints';
 import { getPosts } from '../../src/utils/blog';
 
 /**
@@ -42,12 +36,11 @@ const Blog = ( { headerFooter, postsData } ) => {
 export default Blog;
 
 export async function getStaticProps() {
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
 	const { data: postsData } = await getPosts();
 	
 	return {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
+			headerFooter: {},
 			postsData: postsData || {},
 		},
 		

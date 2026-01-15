@@ -11,8 +11,6 @@ import Layout from '../src/components/layout';
 import { FALLBACK, handleRedirectsAndReturnData, isCustomPageUri } from '../src/utils/slug';
 import { getFormattedDate, getPathNameFromUrl, sanitize } from '../src/utils/miscellaneous';
 import { getPage, getPages, getPost, getPosts } from '../src/utils/blog';
-import axios from 'axios';
-import { HEADER_FOOTER_ENDPOINT } from '../src/utils/constants/endpoints';
 import Image from '../src/components/image';
 import PostMeta from '../src/components/post-meta';
 
@@ -50,12 +48,11 @@ export default Page;
 
 export async function getStaticProps( { params } ) {
 	
-	const { data: headerFooterData } = await axios.get( HEADER_FOOTER_ENDPOINT );
 	const pageData = await getPage( params?.slug.pop() ?? '' );
 	
 	const defaultProps = {
 		props: {
-			headerFooter: headerFooterData?.data ?? {},
+			headerFooter: {},
 			pageData: pageData?.[0] ?? {}
 		},
 		/**

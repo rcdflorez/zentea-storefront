@@ -54,6 +54,11 @@ const Header = ( { header } ) => {
 										   dangerouslySetInnerHTML={ { __html: menuItem.title } }/>
 									</Link>
 								) ) : null }
+								<Link href="/events">
+									<a className="block mt-4 lg:inline-block lg:mt-0 hover:text-brand-royal-blue duration-500 mr-10">
+										Classes &amp; Events
+									</a>
+								</Link>
 								<Link href="/blog">
 									<a className="block mt-4 lg:inline-block lg:mt-0 hover:text-brand-royal-blue duration-500 mr-10">Blog</a>
 								</Link>

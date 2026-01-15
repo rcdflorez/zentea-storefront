@@ -114,8 +114,12 @@ export const createTheOrder = async ( orderData, setOrderFailedError, previousRe
 		response.paymentUrl = result.paymentUrl ?? '';
 		
 	} catch ( error ) {
-		// @TODO to be handled later.
-		console.warn( 'Handle create order error', error?.message );
+		// Solo loguear errores en desarrollo
+		if ( process.env.NODE_ENV === 'development' ) {
+			console.warn( 'Error al crear orden:', error?.message || error );
+		}
+		response.error = error?.message || 'Error al crear la orden. Por favor intenta de nuevo.';
+		setOrderFailedError( response.error );
 	}
 	
 	return response;
