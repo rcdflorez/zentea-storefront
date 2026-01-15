@@ -13,6 +13,15 @@ import {
 	GET_POSTS_ENDPOINT,
 } from './constants/endpoints';
 
+const getAxiosErrorMessage = ( err ) => {
+	return (
+		err?.response?.data?.message ||
+		err?.response?.data?.error ||
+		err?.message ||
+		'Request failed'
+	);
+};
+
 /**
  * Get Posts.
  *
@@ -31,10 +40,10 @@ export const getPosts = async ( pageNo = 1 ) => {
 			}
 		} )
 		.catch( err => {
-			console.log( err.response.data.message )
+			console.log( getAxiosErrorMessage( err ) )
 			return {
 				posts_data: {},
-				error: err.response.data.message
+				error: getAxiosErrorMessage( err )
 			};
 		} );
 };
@@ -54,7 +63,7 @@ export const getPost = async ( postSlug = '' ) => {
 			}
 		} )
 		.catch( err => {
-			console.log( err.response.data.message )
+			console.log( getAxiosErrorMessage( err ) )
 			return [];
 		} );
 };
@@ -74,7 +83,7 @@ export const getPages = async () => {
 			}
 		} )
 		.catch( err => {
-			console.log( err.response.data.message )
+			console.log( getAxiosErrorMessage( err ) )
 			return [];
 		} );
 };
@@ -94,7 +103,7 @@ export const getPage = async ( pageSlug = '' ) => {
 			}
 		} )
 		.catch( err => {
-			console.log( err.response.data.message )
+			console.log( getAxiosErrorMessage( err ) )
 			return [];
 		} );
 };
@@ -114,7 +123,7 @@ export const getComments = async ( postID = '' ) => {
 			}
 		} )
 		.catch( err => {
-			console.log( err.response.data.message )
+			console.log( getAxiosErrorMessage( err ) )
 			return [];
 		} );
 };
@@ -153,7 +162,7 @@ export const postComment = async ( postID = '', data = {} ) => {
 		.catch( err => {
 			return {
 				success: false,
-				error: err.response.data.message,
+				error: getAxiosErrorMessage( err ),
 			};
 		} );
 };
